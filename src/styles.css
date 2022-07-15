@@ -23,6 +23,7 @@ a{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     background-color: #2b2d42;
     color: white;
     padding: 25px 60px;
@@ -64,6 +65,7 @@ a{
     grid-template-columns: repeat(4, 223px);
     gap: 30px;
     justify-content: center;
+    margin-bottom: 50px;
 }
 
 @media (max-width: 1000px){
@@ -81,7 +83,11 @@ a{
 .item{
     border: 2px solid #2b2d42;
     border-radius: 4px;
+}
 
+.item img{
+    width: 100%;
+    border-radius: 2px 2px 0 0;
 }
 
 .details{
@@ -126,7 +132,9 @@ a{
     margin-bottom: 20px;
 }
 
-.homeBtn{
+.homeBtn, 
+.checkout,
+.remove-all{
     background-color: #2b2d42;
     color: white;
     border: none;
@@ -134,6 +142,14 @@ a{
     border-radius: 3px;
     cursor: pointer;
     margin-top: 10px;
+}
+
+.checkout{
+    background-color: green;
+}
+
+.remove-all{
+    background-color: red;
 }
 
 .bi-x-lg{

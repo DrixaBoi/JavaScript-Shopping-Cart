@@ -24,15 +24,16 @@ let generateCartItems = () => {
             let {id, item} = x;
             //setting the shopItemsData in the data.js file to a variable, that will ensure a match between y.id with the item id, otherwise display nothing to ensure only items in the basket display their img
             let search = shopItemsData.find((y) => y.id === id) || [];
+            let {img, name, price} = search;
             return `
                 <div class="cart-item">
-                    <img width="100" height="110" src=${search.img} alt=""/>
+                    <img width="100" height="110" src=${img} alt=""/>
                     <div class="details">
                         
                         <div class="title-price-x">
                             <h4 class="title-price">
-                                <p>${search.name}</p>
-                                <p class="cart-item-price">$ ${search.price}</p>    
+                                <p>${name}</p>
+                                <p class="cart-item-price">$ ${price}</p>    
                             </h4>
                             <i onclick="removeItem(${id})" class="bi bi-x-lg"></i>
                         </div>
@@ -122,13 +123,50 @@ let update = (id) => {
     document.getElementById(id).innerHTML = search.item;
     //calculation function will only be trigged when the update function is used by increment and decrement
     calculation();
+    //invokes the total amount to update when an item is increased or decreased
+    totalAmount();
 };
+
 
 let removeItem = (id) => {
     let selectedItem = id;
     basket = basket.filter ((x) => x.id !== selectedItem.id);
     generateCartItems();
+    //invokes the total amount to update when an item is removed
+    totalAmount();
+    calculation();
     
     localStorage.setItem("data", JSON.stringify(basket));
+};
 
+//this function will clear everything from the cart
+let clearCart = () => {
+    //clears the basket items to an empty array
+    basket = []
+    //invokes the cart items
+    generateCartItems();
+    //invokes the total in the nav bar resetting it to show 0
+    calculation();
+
+    localStorage.setItem("data", JSON.stringify(basket));
+};
+
+//this function will calculate a total amount at the top of the cart page for the user to see
+let totalAmount = () => {
+    if(basket.length !==0){
+        let amount= basket.map((x) => {
+           let {id, item} = x;
+           let search = shopItemsData.find((y) => y.id === id) || [];
+           return item * search.price; 
+        })
+            .reduce((x, y) => x + y, 0)
+            label.innerHTML = `
+                <h2>Total Bill : $ ${amount}</h2>
+                <button class="checkout">Checkout</button>
+                <button onclick="clearCart()" class="remove-all">Clear Cart</button>
+                `;       
+    }
+    else return
 }
+
+totalAmount();
